@@ -12,7 +12,7 @@ import About from "./Components/Home/About";
 
 const AppContent = () => {
   const location = useLocation();
-  const isDashboard = location.pathname.startsWith("/dashboard");
+  const isDashboard = location.pathname.startsWith("/app");
 
   return (
     <>
@@ -20,7 +20,7 @@ const AppContent = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route
-          path="/dashboard"
+          path="/app/*"
           element={
             <>
               <SignedIn>

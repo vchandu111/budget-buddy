@@ -24,7 +24,7 @@ const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const location = useLocation();
-  const isDashboard = location.pathname.startsWith("/dashboard");
+  const isDashboard = location.pathname.startsWith("/app");
 
   const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
 
@@ -63,7 +63,7 @@ const Navbar = () => {
   const accountItems = [
     {
       label: "Dashboard",
-      href: "/dashboard",
+      href: "/app",
       icon: <LayoutDashboard className="w-5 h-5" />,
     },
     {
@@ -80,7 +80,7 @@ const Navbar = () => {
 
   if (isDashboard) {
     return (
-      <nav className="bg-white shadow-sm sticky top-0 z-50">
+      <nav  className="bg-white shadow-sm sticky top-0 z-50">
         <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
@@ -107,7 +107,7 @@ const Navbar = () => {
 
   return (
     <nav className="bg-white shadow-sm sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
@@ -137,7 +137,7 @@ const Navbar = () => {
           {/* Auth Section - Desktop */}
           <div className="hidden md:flex items-center space-x-4">
             <SignedOut>
-              <SignInButton mode="modal" afterSignInUrl="/dashboard">
+              <SignInButton mode="modal" afterSignInUrl="/app">
                 <button className="px-4 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 transition-colors">
                   Log in
                 </button>
