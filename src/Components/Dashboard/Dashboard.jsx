@@ -10,11 +10,12 @@ import {
 } from "lucide-react";
 
 // Import pages
-import Overview from "../Pages/Overview";
-import Income from "../Pages/Income";
-import Expense from "../Pages/Expense";
-import Analytics from "../Pages/Analytics";
-import SettingsPage from "../Pages/Settings";
+import Income from "./app/Income";
+import Expense from "./app/Expense";
+import Analytics from "./app/Analytics";
+import SettingsPage from "./app/SettingsPage";
+import Overview from "./app/Overview";
+
 
 const Dashboard = () => {
   const { user } = useUser();
