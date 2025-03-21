@@ -1,6 +1,6 @@
 import "./App.css";
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { SignedIn, SignedOut, RedirectToSignIn } from "@clerk/clerk-react";
 
 // Components
@@ -10,9 +10,12 @@ import Footer from "./Components/Home/Footer";
 import Dashboard from "./Components/Dashboard/Dashboard";
 import About from "./Components/Home/About";
 
-const App = () => {
+const AppContent = () => {
+  const location = useLocation();
+  const isDashboard = location.pathname.startsWith("/dashboard");
+
   return (
-    <BrowserRouter>
+    <>
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -31,7 +34,15 @@ const App = () => {
         />
         <Route path="/about" element={<About />} />
       </Routes>
-      <Footer />
+      {!isDashboard && <Footer />}
+    </>
+  );
+};
+
+const App = () => {
+  return (
+    <BrowserRouter>
+      <AppContent />
     </BrowserRouter>
   );
 };
