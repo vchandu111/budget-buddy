@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -18,7 +18,8 @@ import {
 import {
   Clock,
   PlusCircle,
-  Calculator,
+  IndianRupee,
+  Tag,
   PaperclipIcon,
   Menu,
   ShoppingCart,
@@ -35,18 +36,28 @@ import {
   Gift,
   MoreHorizontal,
   Plane,
+  CreditCard,
+  Pencil,
+  X,
+  Wallet,
+  CreditCard as CreditCardIcon,
+  Landmark,
+  Smartphone,
+  DollarSign,
 } from "lucide-react";
 
 const Expense = () => {
+  const fileInputRef = useRef(null);
   const [formData, setFormData] = useState({
     amount: "",
     category: "",
-    date: new Date().toISOString().split('T')[0],
+    date: new Date().toISOString().split("T")[0],
     paymentMode: "",
     note: "",
     attachment: null,
   });
   const [showCategoryModal, setShowCategoryModal] = useState(false);
+  const [selectedFileName, setSelectedFileName] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -73,33 +84,222 @@ const Expense = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
+
+    // Find the selected category with its icon
+    const selectedCategory = categories.find(
+      (cat) => cat.name === formData.category
+    );
+
+    // Find the selected payment mode with its icon
+    const selectedPaymentMode = paymentModes.find(
+      (mode) => mode.name === formData.paymentMode
+    );
+
+    // Data to be sent to backend
+    const backendData = {
+      date: formData.date,
+      amount: formData.amount,
+      category: {
+        name: selectedCategory?.name || "Not selected",
+        iconName: selectedCategory?.iconName || "",
+        iconColor: selectedCategory?.iconColor || "",
+      },
+      paymentMode: {
+        name: selectedPaymentMode?.name || "Not selected",
+        iconName: selectedPaymentMode?.iconName || "",
+        iconColor: selectedPaymentMode?.iconColor || "",
+      },
+      description: formData.note || "No description",
+      attachment: formData.attachment ? formData.attachment.name : null,
+    };
+
+    // For console display
+    const displayData = {
+      ...backendData,
+      category: {
+        ...backendData.category,
+        icon: selectedCategory?.icon,
+      },
+      paymentMode: {
+        ...backendData.paymentMode,
+        icon: selectedPaymentMode?.icon,
+      },
+    };
+
+    console.log("Data to be sent to backend:", backendData);
+    console.log("Display data with icons:", displayData);
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setFormData((prev) => ({
+        ...prev,
+        attachment: file,
+      }));
+      setSelectedFileName(file.name);
+    }
+  };
+
+  const handleAttachmentClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleRemoveAttachment = () => {
+    setFormData((prev) => ({
+      ...prev,
+      attachment: null,
+    }));
+    setSelectedFileName("");
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   };
 
   const categories = [
-    { id: "food", name: "Food and Dining", icon: <Utensils className="w-5 h-5 text-amber-500" /> },
-    { id: "shopping", name: "Shopping", icon: <ShoppingCart className="w-5 h-5 text-blue-400" /> },
-    { id: "travel", name: "Travelling", icon: <Plane className="w-5 h-5 text-purple-500" /> },
-    { id: "entertainment", name: "Entertainment", icon: <Gamepad className="w-5 h-5 text-green-400" /> },
-    { id: "medical", name: "Medical", icon: <Stethoscope className="w-5 h-5 text-red-400" /> },
-    { id: "personal", name: "Personal Care", icon: <Scissors className="w-5 h-5 text-cyan-500" /> },
-    { id: "education", name: "Education", icon: <GraduationCap className="w-5 h-5 text-purple-600" /> },
-    { id: "bills", name: "Bills and Utilities", icon: <FileText className="w-5 h-5 text-pink-500" /> },
-    { id: "investments", name: "Investments", icon: <TrendingUp className="w-5 h-5 text-green-500" /> },
-    { id: "rent", name: "Rent", icon: <Home className="w-5 h-5 text-cyan-600" /> },
-    { id: "taxes", name: "Taxes", icon: <Receipt className="w-5 h-5 text-gray-600" /> },
-    { id: "insurance", name: "Insurance", icon: <Shield className="w-5 h-5 text-indigo-500" /> },
-    { id: "gifts", name: "Gifts and Donation", icon: <Gift className="w-5 h-5 text-teal-400" /> },
-    { id: "others", name: "Others", icon: <MoreHorizontal className="w-5 h-5 text-gray-400" /> },
+    {
+      id: "food",
+      name: "Food and Dining",
+      icon: <Utensils className="w-5 h-5 text-amber-500" />,
+      iconName: "utensils",
+      iconColor: "text-amber-500",
+    },
+    {
+      id: "shopping",
+      name: "Shopping",
+      icon: <ShoppingCart className="w-5 h-5 text-blue-400" />,
+      iconName: "shopping-cart",
+      iconColor: "text-blue-400",
+    },
+    {
+      id: "travel",
+      name: "Travelling",
+      icon: <Plane className="w-5 h-5 text-purple-500" />,
+      iconName: "plane",
+      iconColor: "text-purple-500",
+    },
+    {
+      id: "entertainment",
+      name: "Entertainment",
+      icon: <Gamepad className="w-5 h-5 text-green-400" />,
+      iconName: "gamepad",
+      iconColor: "text-green-400",
+    },
+    {
+      id: "medical",
+      name: "Medical",
+      icon: <Stethoscope className="w-5 h-5 text-red-400" />,
+      iconName: "stethoscope",
+      iconColor: "text-red-400",
+    },
+    {
+      id: "personal",
+      name: "Personal Care",
+      icon: <Scissors className="w-5 h-5 text-cyan-500" />,
+      iconName: "scissors",
+      iconColor: "text-cyan-500",
+    },
+    {
+      id: "education",
+      name: "Education",
+      icon: <GraduationCap className="w-5 h-5 text-purple-600" />,
+      iconName: "graduation-cap",
+      iconColor: "text-purple-600",
+    },
+    {
+      id: "bills",
+      name: "Bills and Utilities",
+      icon: <FileText className="w-5 h-5 text-pink-500" />,
+      iconName: "file-text",
+      iconColor: "text-pink-500",
+    },
+    {
+      id: "investments",
+      name: "Investments",
+      icon: <TrendingUp className="w-5 h-5 text-green-500" />,
+      iconName: "trending-up",
+      iconColor: "text-green-500",
+    },
+    {
+      id: "rent",
+      name: "Rent",
+      icon: <Home className="w-5 h-5 text-cyan-600" />,
+      iconName: "home",
+      iconColor: "text-cyan-600",
+    },
+    {
+      id: "taxes",
+      name: "Taxes",
+      icon: <Receipt className="w-5 h-5 text-gray-600" />,
+      iconName: "receipt",
+      iconColor: "text-gray-600",
+    },
+    {
+      id: "insurance",
+      name: "Insurance",
+      icon: <Shield className="w-5 h-5 text-indigo-500" />,
+      iconName: "shield",
+      iconColor: "text-indigo-500",
+    },
+    {
+      id: "gifts",
+      name: "Gifts and Donation",
+      icon: <Gift className="w-5 h-5 text-teal-400" />,
+      iconName: "gift",
+      iconColor: "text-teal-400",
+    },
+    {
+      id: "others",
+      name: "Others",
+      icon: <MoreHorizontal className="w-5 h-5 text-gray-400" />,
+      iconName: "more-horizontal",
+      iconColor: "text-gray-400",
+    },
   ];
 
   const paymentModes = [
-    "Cash",
-    "Credit Card",
-    "Debit Card",
-    "UPI",
-    "Bank Transfer",
-    "Other",
+    {
+      id: "cash",
+      name: "Cash",
+      icon: <Wallet className="w-5 h-5 text-green-500" />,
+      iconName: "wallet",
+      iconColor: "text-green-500",
+    },
+    {
+      id: "credit",
+      name: "Credit Card",
+      icon: <CreditCardIcon className="w-5 h-5 text-blue-500" />,
+      iconName: "credit-card",
+      iconColor: "text-blue-500",
+    },
+    {
+      id: "debit",
+      name: "Debit Card",
+      icon: <CreditCard className="w-5 h-5 text-purple-500" />,
+      iconName: "debit-card",
+      iconColor: "text-purple-500",
+    },
+    {
+      id: "upi",
+      name: "UPI",
+      icon: <Smartphone className="w-5 h-5 text-orange-500" />,
+      iconName: "smartphone",
+      iconColor: "text-orange-500",
+    },
+    {
+      id: "bank",
+      name: "Bank Transfer",
+      icon: <Landmark className="w-5 h-5 text-indigo-500" />,
+      iconName: "landmark",
+      iconColor: "text-indigo-500",
+    },
+    {
+      id: "other",
+      name: "Other",
+      icon: <DollarSign className="w-5 h-5 text-gray-500" />,
+      iconName: "dollar-sign",
+      iconColor: "text-gray-500",
+    },
   ];
 
   return (
@@ -115,15 +315,17 @@ const Expense = () => {
           </DialogTrigger>
           <DialogContent className="sm:max-w-[500px] bg-white p-6 rounded-xl">
             <DialogHeader>
-              <DialogTitle className="text-xl font-semibold text-gray-800 mb-4">Add New Expense</DialogTitle>
+              <DialogTitle className="text-xl font-semibold text-gray-800 mb-4">
+                Add New Expense
+              </DialogTitle>
               <div className="flex items-center justify-between mb-6 gap-4">
-                <div className="flex items-center gap-2 bg-gray-50 p-2 rounded-lg w-full">
+                <div className="flex items-center gap-2 bg-gray-50 p-2 rounded-lg w-full shadow-sm border border-gray-200">
                   <input
                     type="date"
                     name="date"
                     value={formData.date}
                     onChange={handleChange}
-                    className="border-none bg-transparent p-1 focus:ring-0 w-full"
+                    className="border-none bg-transparent p-1 focus:ring-0 w-full text-gray-700"
                   />
                 </div>
               </div>
@@ -131,43 +333,51 @@ const Expense = () => {
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-4">
-                <div className="flex items-center gap-3 bg-gray-50 p-3 rounded-lg">
-                  <Calculator className="w-6 h-6 text-indigo-500" />
+                <div className="flex items-center gap-3 bg-gray-50 p-2 rounded-lg shadow-sm border border-gray-200">
+                  <IndianRupee className="w-6 h-6 text-indigo-500" />
                   <div className="flex-1">
-                    <label className="text-sm font-medium text-gray-600 block mb-1">Amount</label>
+                    <label className="text-sm font-medium text-gray-600 block mb-1">
+                      Amount
+                    </label>
                     <div className="flex items-center">
-                      <span className="text-2xl mr-2 text-gray-700 font-semibold">₹</span>
-                      <Input
+                      <span className="text-2xl mr-2 text-gray-700 font-semibold">
+                        ₹
+                      </span>
+                      <input
                         name="amount"
                         type="number"
                         value={formData.amount}
                         onChange={handleChange}
-                        placeholder="0"
-                        className="text-2xl border-none bg-transparent p-0 focus:ring-0"
+                        placeholder=""
+                        className="text-xl border-none bg-transparent p-0 focus:ring-0 focus:outline-none text-gray-700"
                       />
                     </div>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 bg-gray-50 p-3 rounded-lg">
-                  <Menu className="w-6 h-6 text-indigo-500" />
+                <div className="flex items-center gap-3 bg-gray-50 p-3 rounded-lg shadow-sm border border-gray-200">
+                  <Tag className="w-6 h-6 text-indigo-500" />
                   <div className="flex-1">
-                    <label className="text-sm font-medium text-gray-600 block mb-1">Category</label>
+                    <label className="text-sm font-medium text-gray-600 block mb-1">
+                      Category
+                    </label>
                     <button
                       type="button"
                       onClick={() => setShowCategoryModal(true)}
-                      className="text-left w-full text-gray-700 hover:text-indigo-600 transition-colors"
+                      className="text-left w-full text-gray-700 hover:text-indigo-600 transition-colors font-medium"
                     >
                       {formData.category || "Select category"}
                     </button>
-                    
+
                     {showCategoryModal && (
                       <div className="fixed inset-0 bg-gray-300 bg-opacity-50 z-50 flex items-center justify-center">
-                        <div className="bg-white rounded-xl p-6 w-[90%] max-w-md max-h-[50vh] overflow-y-auto">
+                        <div className="bg-white rounded-xl p-6 w-[90%] max-w-md max-h-[50vh] overflow-y-auto shadow-lg">
                           <div className="flex justify-between items-center mb-4">
-                            <h3 className="text-lg font-semibold">Select Category</h3>
-                            <button 
-                              type="button" 
+                            <h3 className="text-lg font-semibold">
+                              Select Category
+                            </h3>
+                            <button
+                              type="button"
                               onClick={() => setShowCategoryModal(false)}
                               className="text-gray-500 hover:text-gray-700"
                             >
@@ -179,13 +389,17 @@ const Expense = () => {
                               <button
                                 key={category.id}
                                 type="button"
-                                onClick={() => handleCategorySelect(category.name)}
+                                onClick={() =>
+                                  handleCategorySelect(category.name)
+                                }
                                 className="flex flex-col items-center justify-center p-3 bg-white-100 rounded-lg hover:bg-indigo-100 transition-colors"
                               >
                                 <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mb-2 shadow-sm">
                                   {category.icon}
                                 </div>
-                                <span className="text-xs text-center">{category.name}</span>
+                                <span className="text-xs text-center">
+                                  {category.name}
+                                </span>
                               </button>
                             ))}
                           </div>
@@ -195,23 +409,28 @@ const Expense = () => {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 bg-gray-50 p-3 rounded-lg">
-                  <PlusCircle className="w-6 h-6 text-indigo-500" />
+                <div className="flex items-center gap-3 bg-gray-50 p-3 rounded-lg shadow-sm border border-gray-200">
+                  <CreditCard className="w-6 h-6 text-indigo-500" />
                   <div className="flex-1">
-                    <label className="text-sm font-medium text-gray-600 block mb-1">Payment mode</label>
+                    <label className="text-sm font-medium text-gray-600 block mb-1">
+                      Payment mode
+                    </label>
                     <Select
                       value={formData.paymentMode}
                       onValueChange={(value) =>
                         handleSelectChange("paymentMode", value)
                       }
                     >
-                      <SelectTrigger className="border-none bg-transparent focus:ring-0 p-0 h-8">
+                      <SelectTrigger className="border-none bg-transparent focus:ring-0 p-0 h-8 text-gray-700 font-medium">
                         <SelectValue placeholder="Select payment mode" />
                       </SelectTrigger>
                       <SelectContent>
                         {paymentModes.map((mode) => (
-                          <SelectItem key={mode} value={mode}>
-                            {mode}
+                          <SelectItem key={mode.id} value={mode.name}>
+                            <div className="flex items-center gap-2">
+                              {mode.icon}
+                              <span>{mode.name}</span>
+                            </div>
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -224,25 +443,49 @@ const Expense = () => {
                 <h3 className="text-lg font-medium text-gray-700 mb-3">
                   Other details
                 </h3>
-                <div className="flex items-center gap-3 bg-gray-50 p-3 rounded-lg">
-                  <Menu className="w-6 h-6 text-indigo-500" />
-                  <Input
+                <div className="flex items-center gap-3 bg-gray-50 p-3 rounded-lg shadow-sm border border-gray-200">
+                  <Pencil className="w-6 h-6 text-indigo-500" />
+                  <input
                     name="note"
                     value={formData.note}
                     onChange={handleChange}
                     placeholder="Write a note"
-                    className="border-none bg-transparent focus:ring-0"
+                    className="border-none bg-transparent focus:ring-0 focus:outline-none text-gray-700"
                   />
                 </div>
 
-                <div className="flex items-center gap-3 bg-gray-50 p-3 rounded-lg">
+                <div className="flex items-center gap-3 bg-gray-50 p-3 rounded-lg shadow-sm border border-gray-200">
                   <PaperclipIcon className="w-6 h-6 text-indigo-500" />
-                  <button
-                    type="button"
-                    className="text-gray-600 hover:text-indigo-600 transition-colors font-medium"
-                  >
-                    Add attachment
-                  </button>
+                  <div className="flex-1">
+                    <input
+                      type="file"
+                      ref={fileInputRef}
+                      onChange={handleFileChange}
+                      className="hidden"
+                    />
+                    {selectedFileName ? (
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-gray-600">
+                          {selectedFileName}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={handleRemoveAttachment}
+                          className="text-red-500 hover:text-red-700 ml-2"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={handleAttachmentClick}
+                        className="text-gray-600 hover:text-indigo-600 transition-colors font-medium"
+                      >
+                        Add attachment
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
 
@@ -258,9 +501,11 @@ const Expense = () => {
           </DialogContent>
         </Dialog>
       </div>
-      
+
       <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
-        <p className="text-gray-500 text-center py-8">No expenses added yet. Click "Add Expense" to get started.</p>
+        <p className="text-gray-500 text-center py-8">
+          No expenses added yet. Click "Add Expense" to get started.
+        </p>
       </div>
     </div>
   );
