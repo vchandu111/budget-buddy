@@ -12,7 +12,7 @@ const Expense = () => {
   const fetchExpenses = async () => {
     try {
       const response = await fetch(
-        "https://budgetbuddy-bc5a0-default-rtdb.firebaseio.com/income.json"
+        "https://budgetbuddy-bc5a0-default-rtdb.firebaseio.com/expense.json"
       );
       const data = await response.json();
       const expensesArray = data

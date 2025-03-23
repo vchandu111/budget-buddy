@@ -98,7 +98,8 @@ const ExpenseDisplay = ({ expenses, onDelete, onEdit }) => {
 
   return (
     <>
-      <div className="flex gap-8">
+        <h2 className="text-2xl font-bold text-gray-800">All Expenses</h2>
+        <div className="flex gap-8">
         {/* Left side: Expense cards */}
         <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
           {expenses.map((expense) => (

@@ -1,6 +1,6 @@
 import React from "react";
 import * as Icons from "lucide-react";
-import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 
 const ExpenseSummary = ({ expenses }) => {
   const renderIcon = (iconName) => {
@@ -41,6 +41,7 @@ const ExpenseSummary = ({ expenses }) => {
     name: category.name,
     value: category.total,
     color: category.color,
+    percentage: ((category.total / totalAmount) * 100).toFixed(1),
   }));
 
   return (
@@ -70,9 +71,6 @@ const ExpenseSummary = ({ expenses }) => {
             <div className="text-right">
               <div className="font-semibold text-gray-900">
                 ₹{category.total.toLocaleString()}
-              </div>
-              <div className="text-xs text-gray-500">
-                {((category.total / totalAmount) * 100).toFixed(1)}%
               </div>
             </div>
           </div>
@@ -115,6 +113,19 @@ const ExpenseSummary = ({ expenses }) => {
                   />
                 ))}
               </Pie>
+              <Tooltip
+                formatter={(value, name, props) => [
+                  `₹${value.toLocaleString()} (${props.payload.percentage}%)`,
+                  props.payload.name,
+                ]}
+                contentStyle={{
+                  backgroundColor: "white",
+                  border: "1px solid #f0f0f0",
+                  borderRadius: "8px",
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+                }}
+                itemStyle={{ color: "#666" }}
+              />
             </PieChart>
           </ResponsiveContainer>
         </div>
@@ -127,9 +138,14 @@ const ExpenseSummary = ({ expenses }) => {
                 className="w-3 h-3 rounded-full"
                 style={{ backgroundColor: category.color }}
               />
-              <span className="text-sm text-gray-600 truncate">
-                {category.name}
-              </span>
+              <div className="flex items-center gap-1">
+                <span className="text-sm text-gray-600 truncate">
+                  {category.name}
+                </span>
+                <span className="text-xs text-gray-500">
+                  ({((category.total / totalAmount) * 100).toFixed(0)}%)
+                </span>
+              </div>
             </div>
           ))}
         </div>

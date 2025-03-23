@@ -94,7 +94,7 @@ const ExpenseForm = () => {
       };
 
       const response = await fetch(
-        "https://budgetbuddy-bc5a0-default-rtdb.firebaseio.com/income.json",
+        "https://budgetbuddy-bc5a0-default-rtdb.firebaseio.com/expense.json",
         requestOptions
       );
       const result = await response.json();
