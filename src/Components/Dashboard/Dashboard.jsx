@@ -11,7 +11,7 @@ import {
 
 // Import pages
 import Income from "./app/Income";
-import Expense from "./app/Expense";
+import Expense from "./app/Expense/Expense";
 import Analytics from "./app/Analytics";
 import SettingsPage from "./app/SettingsPage";
 import Overview from "./app/Overview";
