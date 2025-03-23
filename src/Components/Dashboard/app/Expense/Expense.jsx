@@ -9,31 +9,53 @@ const Expense = () => {
   const [expenses, setExpenses] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchExpenses = async () => {
-      try {
-        const response = await fetch(
-          "https://budgetbuddy-bc5a0-default-rtdb.firebaseio.com/income.json"
-        );
-        const data = await response.json();
-        const expensesArray = data
-          ? Object.entries(data).map(([id, expense]) => ({
-              id,
-              ...expense,
-            }))
-          : [];
-        setExpenses(expensesArray);
-      } catch (error) {
-        console.error("Error fetching expenses:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchExpenses = async () => {
+    try {
+      const response = await fetch(
+        "https://budgetbuddy-bc5a0-default-rtdb.firebaseio.com/income.json"
+      );
+      const data = await response.json();
+      const expensesArray = data
+        ? Object.entries(data).map(([id, expense]) => ({
+            id,
+            ...expense,
+          }))
+        : [];
+      setExpenses(expensesArray);
+    } catch (error) {
+      console.error("Error fetching expenses:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchExpenses();
     const intervalId = setInterval(fetchExpenses, 5000);
     return () => clearInterval(intervalId);
   }, []);
+
+  const handleDelete = async (id) => {
+    try {
+      const response = await fetch(
+        `https://budgetbuddy-bc5a0-default-rtdb.firebaseio.com/income/${id}.json`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (response.ok) {
+        // Remove the deleted expense from the state
+        setExpenses((prevExpenses) =>
+          prevExpenses.filter((expense) => expense.id !== id)
+        );
+      } else {
+        console.error("Failed to delete expense");
+      }
+    } catch (error) {
+      console.error("Error deleting expense:", error);
+    }
+  };
 
   if (loading) {
     return (
@@ -62,7 +84,7 @@ const Expense = () => {
 
       <div className="space-y-8">
         <ExpenseChart expenses={expenses} />
-        <ExpenseDisplay expenses={expenses} />
+        <ExpenseDisplay expenses={expenses} onDelete={handleDelete} />
       </div>
     </div>
   );

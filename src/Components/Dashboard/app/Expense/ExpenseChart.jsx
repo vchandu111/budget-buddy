@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   AreaChart,
   Area,
@@ -10,30 +10,58 @@ import {
 } from "recharts";
 
 const ExpenseChart = ({ expenses }) => {
+  const [timeFilter, setTimeFilter] = useState("daily"); // daily, monthly, yearly
+
+  const getHeadingText = () => {
+    switch (timeFilter) {
+      case "monthly":
+        return "Monthly spending overview";
+      case "yearly":
+        return "Yearly spending overview";
+      default:
+        return "Daily spending overview";
+    }
+  };
+
   const processExpensesForChart = (expenses) => {
     // Sort expenses by date
     const sortedExpenses = [...expenses].sort(
       (a, b) => new Date(a.date) - new Date(b.date)
     );
 
-    // Group expenses by date and calculate total amount
+    // Group expenses based on selected time filter
     const groupedData = sortedExpenses.reduce((acc, expense) => {
-      const date = new Date(expense.date).toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-      });
+      let dateKey;
+      const expenseDate = new Date(expense.date);
+
+      switch (timeFilter) {
+        case "monthly":
+          dateKey = expenseDate.toLocaleDateString("en-US", {
+            month: "short",
+            year: "numeric",
+          });
+          break;
+        case "yearly":
+          dateKey = expenseDate.getFullYear().toString();
+          break;
+        default: // daily
+          dateKey = expenseDate.toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+          });
+      }
 
       const amount = parseFloat(
         expense.amount.replace("₹", "").replace(/,/g, "")
       );
 
-      if (!acc[date]) {
-        acc[date] = {
-          date,
+      if (!acc[dateKey]) {
+        acc[dateKey] = {
+          date: dateKey,
           amount: 0,
         };
       }
-      acc[date].amount += amount;
+      acc[dateKey].amount += amount;
       return acc;
     }, {});
 
@@ -58,9 +86,45 @@ const ExpenseChart = ({ expenses }) => {
 
   return (
     <div className="w-full bg-white rounded-xl shadow-sm p-6">
-      <div className="mb-6">
-        <h2 className="text-xl font-semibold text-gray-800">Expense Trends</h2>
-        <p className="text-sm text-gray-500">Daily spending overview</p>
+      <div className="flex justify-between items-center mb-6">
+        <div>
+          <h2 className="text-xl font-semibold text-gray-800">
+            Expense Trends
+          </h2>
+          <p className="text-sm text-gray-500">{getHeadingText()}</p>
+        </div>
+        <div className="flex items-center gap-4 bg-gray-50 p-1 rounded-lg">
+          <button
+            onClick={() => setTimeFilter("daily")}
+            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+              timeFilter === "daily"
+                ? "bg-white text-indigo-600 shadow-sm"
+                : "text-gray-600 hover:text-indigo-600"
+            }`}
+          >
+            Daily
+          </button>
+          <button
+            onClick={() => setTimeFilter("monthly")}
+            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+              timeFilter === "monthly"
+                ? "bg-white text-indigo-600 shadow-sm"
+                : "text-gray-600 hover:text-indigo-600"
+            }`}
+          >
+            Monthly
+          </button>
+          <button
+            onClick={() => setTimeFilter("yearly")}
+            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+              timeFilter === "yearly"
+                ? "bg-white text-indigo-600 shadow-sm"
+                : "text-gray-600 hover:text-indigo-600"
+            }`}
+          >
+            Yearly
+          </button>
+        </div>
       </div>
       <div className="h-[400px]">
         <ResponsiveContainer width="100%" height="100%">
@@ -69,7 +133,8 @@ const ExpenseChart = ({ expenses }) => {
             margin={{
               top: 10,
               right: 30,
-              left: 20,
+              left: 50,
+              bottom: 20,
             }}
           >
             <CartesianGrid
