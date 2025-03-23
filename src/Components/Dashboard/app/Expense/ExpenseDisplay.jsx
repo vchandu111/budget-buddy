@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { IndianRupee, Calendar, Pencil, Trash2 } from "lucide-react";
+import {
+  IndianRupee,
+  Calendar,
+  Pencil,
+  Trash2,
+  Download,
+  TrendingDown,
+} from "lucide-react";
 import * as Icons from "lucide-react";
 import {
   Dialog,
@@ -96,10 +103,58 @@ const ExpenseDisplay = ({ expenses, onDelete, onEdit }) => {
     }
   };
 
+  const downloadAsCsv = () => {
+    // Prepare CSV headers
+    const headers = ["Date", "Category", "Amount", "Payment Mode", "Note"].join(
+      ","
+    );
+
+    // Convert expenses to CSV rows
+    const csvRows = expenses.map((expense) => {
+      const date = new Date(expense.date).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      });
+      const amount = expense.amount.replace("₹", "").trim();
+      const category = expense.category.name;
+      const paymentMode = expense.paymentMode.name;
+      const note = expense.note ? `"${expense.note.replace(/"/g, '""')}"` : ""; // Handle quotes in notes
+
+      return [date, category, amount, paymentMode, note].join(",");
+    });
+
+    // Combine headers and rows
+    const csvContent = [headers, ...csvRows].join("\n");
+
+    // Create and trigger download
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute(
+      "download",
+      `expenses_${new Date().toISOString().split("T")[0]}.csv`
+    );
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <>
+      <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-gray-800">All Expenses</h2>
-        <div className="flex gap-8">
+        <Button
+          variant="outline"
+          onClick={downloadAsCsv}
+          className="flex items-center gap-2"
+        >
+          <Download className="w-4 h-4 text-red-900" />
+          Download CSV
+        </Button>
+      </div>
+      <div className="flex gap-8">
         {/* Left side: Expense cards */}
         <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
           {expenses.map((expense) => (
@@ -148,17 +203,19 @@ const ExpenseDisplay = ({ expenses, onDelete, onEdit }) => {
                     day: "numeric",
                   })}
                 </div>
-                <div className="font-medium text-emerald-600 flex items-center">
-                  <IndianRupee className="w-4 h-4 mr-1" />
-                  {expense.amount.replace("₹", "")}
-                </div>
               </div>
 
-              {expense.note && (
-                <div className="pt-4 border-t border-gray-200 text-sm text-slate-600 line-clamp-2">
-                  {expense.note}
+              <div className="pt-4 border-t flex items-center justify-between border-gray-200">
+                {expense.note && (
+                  <div className="text-sm text-slate-600 line-clamp-2">
+                    {expense.note}
+                  </div>
+                )}
+                <div className="font-medium text-rose-600 flex items-center gap-1 bg-rose-50/50 px-2 py-1 rounded w-fit">
+                  <span>- ₹{expense.amount.replace("₹", "").trim()}</span>
+                  <TrendingDown className="w-3 h-3" />
                 </div>
-              )}
+              </div>
             </div>
           ))}
         </div>
