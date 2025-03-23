@@ -57,6 +57,34 @@ const Expense = () => {
     }
   };
 
+  const handleEdit = async (id, updatedData) => {
+    try {
+      const response = await fetch(
+        `https://budgetbuddy-bc5a0-default-rtdb.firebaseio.com/income/${id}.json`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedData),
+        }
+      );
+
+      if (response.ok) {
+        // Update the expense in the local state
+        setExpenses((prevExpenses) =>
+          prevExpenses.map((expense) =>
+            expense.id === id ? { ...expense, ...updatedData } : expense
+          )
+        );
+      } else {
+        console.error("Failed to update expense");
+      }
+    } catch (error) {
+      console.error("Error updating expense:", error);
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
@@ -84,7 +112,11 @@ const Expense = () => {
 
       <div className="space-y-8">
         <ExpenseChart expenses={expenses} />
-        <ExpenseDisplay expenses={expenses} onDelete={handleDelete} />
+        <ExpenseDisplay
+          expenses={expenses}
+          onDelete={handleDelete}
+          onEdit={handleEdit}
+        />
       </div>
     </div>
   );

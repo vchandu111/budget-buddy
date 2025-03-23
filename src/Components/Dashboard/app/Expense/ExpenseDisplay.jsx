@@ -10,10 +10,29 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { categories, paymentModes } from "@/utils/data";
 
-const ExpenseDisplay = ({ expenses, onDelete }) => {
+const ExpenseDisplay = ({ expenses, onDelete, onEdit }) => {
   const [deletingId, setDeletingId] = useState(null);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
+  const [editingExpense, setEditingExpense] = useState(null);
+  const [showEditDialog, setShowEditDialog] = useState(false);
+  const [editFormData, setEditFormData] = useState({
+    amount: "",
+    category: "",
+    paymentMode: "",
+    date: "",
+    note: "",
+  });
 
   const renderIcon = (iconName) => {
     const IconComponent = Icons[iconName];
@@ -23,6 +42,49 @@ const ExpenseDisplay = ({ expenses, onDelete }) => {
   const handleDeleteClick = (id) => {
     setDeletingId(id);
     setShowConfirmDelete(true);
+  };
+
+  const handleEditClick = (expense) => {
+    setEditingExpense(expense);
+    setEditFormData({
+      amount: expense.amount.replace("₹", ""),
+      category: expense.category.name,
+      paymentMode: expense.paymentMode.name,
+      date: expense.date,
+      note: expense.note || "",
+    });
+    setShowEditDialog(true);
+  };
+
+  const handleEditSubmit = async () => {
+    if (!editingExpense) return;
+
+    const selectedCategory = categories.find(
+      (cat) => cat.name === editFormData.category
+    );
+    const selectedPaymentMode = paymentModes.find(
+      (mode) => mode.name === editFormData.paymentMode
+    );
+
+    const updatedData = {
+      amount: `₹${editFormData.amount}`,
+      category: {
+        name: selectedCategory.name,
+        icon: selectedCategory.icon,
+        color: selectedCategory.color,
+      },
+      paymentMode: {
+        name: selectedPaymentMode.name,
+        icon: selectedPaymentMode.icon,
+        color: selectedPaymentMode.color,
+      },
+      date: editFormData.date,
+      note: editFormData.note,
+    };
+
+    await onEdit(editingExpense.id, updatedData);
+    setShowEditDialog(false);
+    setEditingExpense(null);
   };
 
   const confirmDelete = async () => {
@@ -87,7 +149,10 @@ const ExpenseDisplay = ({ expenses, onDelete }) => {
                   </div>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <button className="p-2 rounded-md hover:bg-gray-100 text-gray-400 hover:text-indigo-600">
+                  <button
+                    onClick={() => handleEditClick(expense)}
+                    className="p-2 rounded-md hover:bg-gray-100 text-gray-400 hover:text-indigo-600"
+                  >
                     <Pencil className="w-4 h-4" />
                   </button>
                   <button
@@ -187,6 +252,98 @@ const ExpenseDisplay = ({ expenses, onDelete }) => {
             <Button variant="destructive" onClick={confirmDelete}>
               Delete
             </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit Expense Dialog */}
+      <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Edit Expense</DialogTitle>
+            <DialogDescription>
+              Make changes to your expense here. Click save when you're done.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid gap-2">
+              <Label htmlFor="amount">Amount</Label>
+              <Input
+                id="amount"
+                type="number"
+                value={editFormData.amount}
+                onChange={(e) =>
+                  setEditFormData({ ...editFormData, amount: e.target.value })
+                }
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="category">Category</Label>
+              <Select
+                value={editFormData.category}
+                onValueChange={(value) =>
+                  setEditFormData({ ...editFormData, category: value })
+                }
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select category" />
+                </SelectTrigger>
+                <SelectContent>
+                  {categories.map((category) => (
+                    <SelectItem key={category.name} value={category.name}>
+                      {category.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="paymentMode">Payment Mode</Label>
+              <Select
+                value={editFormData.paymentMode}
+                onValueChange={(value) =>
+                  setEditFormData({ ...editFormData, paymentMode: value })
+                }
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select payment mode" />
+                </SelectTrigger>
+                <SelectContent>
+                  {paymentModes.map((mode) => (
+                    <SelectItem key={mode.name} value={mode.name}>
+                      {mode.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="date">Date</Label>
+              <Input
+                id="date"
+                type="date"
+                value={editFormData.date}
+                onChange={(e) =>
+                  setEditFormData({ ...editFormData, date: e.target.value })
+                }
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="note">Note</Label>
+              <Input
+                id="note"
+                value={editFormData.note}
+                onChange={(e) =>
+                  setEditFormData({ ...editFormData, note: e.target.value })
+                }
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowEditDialog(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleEditSubmit}>Save changes</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
