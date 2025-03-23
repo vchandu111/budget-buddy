@@ -20,6 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { categories, paymentModes } from "@/utils/data";
+import ExpenseSummary from "./ExpenseSummary";
 
 const ExpenseDisplay = ({ expenses, onDelete, onEdit }) => {
   const [deletingId, setDeletingId] = useState(null);
@@ -95,33 +96,6 @@ const ExpenseDisplay = ({ expenses, onDelete, onEdit }) => {
     }
   };
 
-  // Process expenses to get category totals
-  const getCategoryTotals = () => {
-    const categoryTotals = expenses.reduce((acc, expense) => {
-      const categoryName = expense.category.name;
-      const amount = parseFloat(
-        expense.amount.replace("₹", "").replace(/,/g, "")
-      );
-
-      if (!acc[categoryName]) {
-        acc[categoryName] = {
-          total: 0,
-          color: expense.category.color,
-          icon: expense.category.icon,
-        };
-      }
-      acc[categoryName].total += amount;
-      return acc;
-    }, {});
-
-    return Object.entries(categoryTotals).map(([name, data]) => ({
-      name,
-      ...data,
-    }));
-  };
-
-  const categoryTotals = getCategoryTotals();
-
   return (
     <>
       <div className="flex gap-8">
@@ -189,47 +163,7 @@ const ExpenseDisplay = ({ expenses, onDelete, onEdit }) => {
         </div>
 
         {/* Right side: Category summary */}
-        <div className="hidden lg:block w-80 bg-white rounded-xl shadow-sm p-6">
-          <h2 className="text-xl font-semibold text-gray-800 mb-6">
-            Expenses by Category
-          </h2>
-          <div className="space-y-4">
-            {categoryTotals.map((category) => (
-              <div
-                key={category.name}
-                className="flex items-center justify-between py-2"
-              >
-                <div className="flex items-center gap-3">
-                  <div
-                    className="w-8 h-8 rounded-full flex items-center justify-center"
-                    style={{ backgroundColor: `${category.color}20` }}
-                  >
-                    <div style={{ color: category.color }}>
-                      {renderIcon(category.icon)}
-                    </div>
-                  </div>
-                  <span className="font-medium text-gray-700">
-                    {category.name}
-                  </span>
-                </div>
-                <div className="font-semibold text-gray-900">
-                  ₹{category.total.toLocaleString()}
-                </div>
-              </div>
-            ))}
-            <div className="pt-4 mt-4 border-t border-gray-200">
-              <div className="flex items-center justify-between">
-                <span className="font-medium text-gray-800">Total</span>
-                <span className="font-bold text-gray-900">
-                  ₹
-                  {categoryTotals
-                    .reduce((sum, cat) => sum + cat.total, 0)
-                    .toLocaleString()}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
+        <ExpenseSummary expenses={expenses} />
       </div>
 
       {/* Delete Confirmation Dialog */}
