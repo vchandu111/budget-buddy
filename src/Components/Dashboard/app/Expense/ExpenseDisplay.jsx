@@ -8,6 +8,7 @@ import {
   TrendingDown,
   Search,
   X,
+  AlertTriangle,
 } from "lucide-react";
 import * as Icons from "lucide-react";
 import {
@@ -330,25 +331,37 @@ const ExpenseDisplay = ({ expenses, onDelete, onEdit, onSearchChange }) => {
 
       {/* Delete Confirmation Dialog */}
       <Dialog open={showConfirmDelete} onOpenChange={setShowConfirmDelete}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Delete Expense</DialogTitle>
-            <DialogDescription>
-              Are you sure you want to delete this expense? This action cannot
-              be undone.
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
+        <DialogContent className="sm:max-w-[425px] p-0">
+          <div className="p-6">
+            <div className="flex items-start gap-3">
+              <AlertTriangle className="w-6 h-6 text-rose-500 mt-0.5" />
+              <div>
+                <DialogTitle className="text-xl font-semibold text-rose-500">
+                  Confirm Deletion
+                </DialogTitle>
+                <DialogDescription className="mt-3 text-gray-600 dark:text-gray-300">
+                  Are you sure you want to delete this expense? This action
+                  cannot be undone.
+                </DialogDescription>
+              </div>
+            </div>
+          </div>
+          <div className="flex items-center justify-end gap-2 p-4 bg-gray-50 dark:bg-gray-800/50">
             <Button
               variant="outline"
               onClick={() => setShowConfirmDelete(false)}
+              className="bg-white dark:bg-transparent"
             >
               Cancel
             </Button>
-            <Button variant="destructive" onClick={confirmDelete}>
-              Delete
+            <Button
+              variant="destructive"
+              onClick={confirmDelete}
+              className="bg-rose-500 hover:bg-rose-600"
+            >
+              Delete Expense
             </Button>
-          </DialogFooter>
+          </div>
         </DialogContent>
       </Dialog>
 
