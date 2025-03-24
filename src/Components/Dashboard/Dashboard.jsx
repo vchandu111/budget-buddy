@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 
 // Import pages
-import Income from "./app/Income";
+import Income from "./app/Income/Income";
 import Expense from "./app/Expense/Expense";
 import Analytics from "./app/Analytics";
 import SettingsPage from "./app/SettingsPage";

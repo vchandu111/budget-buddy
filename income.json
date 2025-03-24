@@ -1,0 +1,62 @@
+[
+    {
+        "amount": "1000",
+        "date": "2025-03-28",
+        "isRecurring": false,
+        "source": "Stocks"
+    },
+    {
+        "amount": "1500",
+        "date": "2025-04-15",
+        "isRecurring": true,
+        "source": "Salary"
+    },
+    {
+        "amount": "500",
+        "date": "2025-03-10",
+        "isRecurring": false,
+        "source": "Gift"
+    },
+    {
+        "amount": "2000",
+        "date": "2025-05-22",
+        "isRecurring": true,
+        "source": "Rental Income"
+    },
+    {
+        "amount": "750",
+        "date": "2025-06-01",
+        "isRecurring": false,
+        "source": "Freelance Work"
+    },
+    {
+        "amount": "300",
+        "date": "2025-03-28",
+        "isRecurring": false,
+        "source": "Refund"
+    },
+    {
+        "amount": "1800",
+        "date": "2025-07-12",
+        "isRecurring": true,
+        "source": "Dividends"
+    },
+    {
+        "amount": "2400",
+        "date": "2025-08-19",
+        "isRecurring": true,
+        "source": "Consulting Fees"
+    },
+    {
+        "amount": "600",
+        "date": "2025-04-03",
+        "isRecurring": false,
+        "source": "Lottery Winning"
+    },
+    {
+        "amount": "1300",
+        "date": "2025-09-25",
+        "isRecurring": true,
+        "source": "Pension"
+    }
+]
