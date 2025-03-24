@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import ExpenseDisplay from "./ExpenseDisplay";
 import ExpenseChart from "./ExpenseChart";
 import ExpenseForm from "./ExpenseForm";
+import Loader from "@/Components/Common/Loader";
 
 const Expense = () => {
   const [expenses, setExpenses] = useState([]);
@@ -88,7 +89,7 @@ const Expense = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-600"></div>
+        <Loader/>
       </div>
     );
   }
