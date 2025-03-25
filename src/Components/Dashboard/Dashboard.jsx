@@ -6,15 +6,15 @@ import {
   Wallet,
   Receipt,
   PieChart,
-  Settings,
+  User,
 } from "lucide-react";
 
 // Import pages
 import Income from "./app/Income/Income";
 import Expense from "./app/Expense/Expense";
 import Analytics from "./app/Analytics";
-import SettingsPage from "./app/SettingsPage";
-import Overview from "./app/Overview";
+import Overview from "./app/Overview/Overview";
+import ProfilePage from "./app/ProfilePage";
 
 
 const Dashboard = () => {
@@ -26,7 +26,7 @@ const Dashboard = () => {
     { id: "income", icon: Wallet, label: "Income" },
     { id: "expense", icon: Receipt, label: "Expense" },
     { id: "analytics", icon: PieChart, label: "Analytics" },
-    { id: "settings", icon: Settings, label: "Settings" },
+    { id: "profile", icon: User, label: "Profile" },
   ];
 
   return (
@@ -118,7 +118,7 @@ const Dashboard = () => {
           <Route path="/income" element={<Income />} />
           <Route path="/expense" element={<Expense />} />
           <Route path="/analytics" element={<Analytics />} />
-          <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
         </Routes>
       </div>
     </div>
