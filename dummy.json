@@ -1,123 +1,98 @@
 [
-    {
-      "date": "2024-03-21",
-      "amount": "₹2500",
-      "category": {
-        "name": "Food and Dining",
-        "icon": "Utensils",
-        "color": "amber"
-      },
-      "paymentMode": {
-        "name": "Credit Card",
-        "icon": "CreditCard",
-        "color": "blue"
-      },
-      "note": "Dinner with family at Italian restaurant"
+  {
+    "date": "2025-03-05",
+    "amount": "₹2500",
+    "category": {
+      "name": "Food expenses",
+      "icon": "Utensils",
+      "color": "amber"
     },
-    {
-      "date": "2024-03-20",
-      "amount": "₹15000",
-      "category": {
-        "name": "Rent",
-        "icon": "Home",
-        "color": "cyan"
-      },
-      "paymentMode": {
-        "name": "Bank Transfer",
-        "icon": "Landmark",
-        "color": "indigo"
-      },
-      "note": "Monthly house rent"
+    "paymentMode": {
+      "name": "Credit Card",
+      "icon": "CreditCard",
+      "color": "blue"
     },
-    {
-      "date": "2024-03-19",
-      "amount": "₹3000",
-      "category": {
-        "name": "Shopping",
-        "icon": "ShoppingCart",
-        "color": "blue"
-      },
-      "paymentMode": {
-        "name": "UPI",
-        "icon": "Smartphone",
-        "color": "orange"
-      },
-      "note": "New clothes from mall"
+    "note": "Dinner with family at Italian restaurant",
+    "recurring": false
+  },
+  {
+    "date": "2025-03-03",
+    "amount": "₹3000",
+    "category": {
+      "name": "Shopping",
+      "icon": "ShoppingCart",
+      "color": "blue"
     },
-    {
-      "date": "2024-03-19",
-      "amount": "₹800",
-      "category": {
-        "name": "Entertainment",
-        "icon": "Gamepad",
-        "color": "green"
-      },
-      "paymentMode": {
-        "name": "Debit Card",
-        "icon": "CreditCard",
-        "color": "purple"
-      },
-      "note": "Movie tickets and snacks"
+    "paymentMode": {
+      "name": "UPI",
+      "icon": "Smartphone",
+      "color": "orange"
     },
-    {
-      "date": "2024-03-18",
-      "amount": "₹1200",
-      "category": {
-        "name": "Medical",
-        "icon": "Stethoscope",
-        "color": "red"
-      },
-      "paymentMode": {
-        "name": "Cash",
-        "icon": "Wallet",
-        "color": "green"
-      },
-      "note": "Monthly medicines"
+    "note": "New clothes from mall",
+    "recurring": false
+  },
+  {
+    "date": "2025-02-28",
+    "amount": "₹800",
+    "category": {
+      "name": "Entertainment",
+      "icon": "Gamepad",
+      "color": "green"
     },
-    {
-      "date": "2024-03-18",
-      "amount": "₹2000",
-      "category": {
-        "name": "Bills and Utilities",
-        "icon": "FileText",
-        "color": "pink"
-      },
-      "paymentMode": {
-        "name": "UPI",
-        "icon": "Smartphone",
-        "color": "orange"
-      },
-      "note": "Electricity and internet bills"
+    "paymentMode": {
+      "name": "Debit Card",
+      "icon": "CreditCard",
+      "color": "purple"
     },
-    {
-      "date": "2024-03-17",
-      "amount": "₹5000",
-      "category": {
-        "name": "Education",
-        "icon": "GraduationCap",
-        "color": "purple"
-      },
-      "paymentMode": {
-        "name": "Bank Transfer",
-        "icon": "Landmark",
-        "color": "indigo"
-      },
-      "note": "Online course subscription"
+    "note": "Movie tickets and snacks",
+    "recurring": false
+  },
+  {
+    "date": "2025-02-26",
+    "amount": "₹1200",
+    "category": {
+      "name": "Medical",
+      "icon": "Stethoscope",
+      "color": "red"
     },
-    {
-      "date": "2024-03-16",
-      "amount": "₹1500",
-      "category": {
-        "name": "Personal Care",
-        "icon": "Scissors",
-        "color": "cyan"
-      },
-      "paymentMode": {
-        "name": "Credit Card",
-        "icon": "CreditCard",
-        "color": "blue"
-      },
-      "note": "Haircut and grooming products"
-    }
-  ]
-  
+    "paymentMode": {
+      "name": "Cash",
+      "icon": "Wallet",
+      "color": "green"
+    },
+    "note": "Monthly medicines",
+    "recurring": true
+  },
+  {
+    "date": "2025-03-02",
+    "amount": "₹2000",
+    "category": {
+      "name": "Bills and Utilities",
+      "icon": "FileText",
+      "color": "pink"
+    },
+    "paymentMode": {
+      "name": "UPI",
+      "icon": "Smartphone",
+      "color": "orange"
+    },
+    "note": "Electricity and internet bills",
+    "recurring": true
+  },
+  {
+    "date": "2025-02-20",
+    "amount": "₹5000",
+    "category": {
+      "name": "Education",
+      "icon": "GraduationCap",
+      "color": "purple"
+    },
+    "paymentMode": {
+      "name": "Bank Transfer",
+      "icon": "Landmark",
+      "color": "indigo"
+    },
+    "note": "Online course subscription",
+    "recurring": true
+  }
+]

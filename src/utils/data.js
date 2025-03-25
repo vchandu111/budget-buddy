@@ -23,7 +23,7 @@ import {
 export const categories = [
   {
     id: "food",
-    name: "Food and Dining",
+    name: "Food expenses",
     icon: Utensils,
     iconName: "Utensils",
     color: "#f59e0b",
@@ -34,13 +34,6 @@ export const categories = [
     icon: ShoppingCart,
     iconName: "ShoppingCart",
     color: "blue",
-  },
-  {
-    id: "travel",
-    name: "Travelling",
-    icon: Plane,
-    iconName: "Plane",
-    color: "purple",
   },
   {
     id: "entertainment",
@@ -57,20 +50,6 @@ export const categories = [
     color: "red",
   },
   {
-    id: "personal",
-    name: "Personal Care",
-    icon: Scissors,
-    iconName: "Scissors",
-    color: "cyan",
-  },
-  {
-    id: "education",
-    name: "Education",
-    icon: GraduationCap,
-    iconName: "GraduationCap",
-    color: "purple",
-  },
-  {
     id: "bills",
     name: "Bills and Utilities",
     icon: FileText,
@@ -78,48 +57,14 @@ export const categories = [
     color: "pink",
   },
   {
-    id: "investments",
-    name: "Investments",
-    icon: TrendingUp,
-    iconName: "TrendingUp",
-    color: "green",
-  },
-  {
-    id: "rent",
-    name: "Rent",
-    icon: Home,
-    iconName: "Home",
-    color: "cyan",
-  },
-  {
-    id: "taxes",
-    name: "Taxes",
-    icon: Receipt,
-    iconName: "Receipt",
-    color: "gray",
-  },
-  {
-    id: "insurance",
-    name: "Insurance",
-    icon: Shield,
-    iconName: "Shield",
-    color: "indigo",
-  },
-  {
-    id: "gifts",
-    name: "Gifts and Donation",
-    icon: Gift,
-    iconName: "Gift",
-    color: "teal",
-  },
-  {
-    id: "others",
-    name: "Others",
-    icon: MoreHorizontal,
-    iconName: "MoreHorizontal",
-    color: "gray",
-  },
+    id: "education",
+    name: "Education",
+    icon: GraduationCap,
+    iconName: "GraduationCap",
+    color: "purple",
+  }
 ];
+
 
 export const paymentModes = [
   {

@@ -15,7 +15,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { PlusCircle, IndianRupee, Tag, CreditCard, Pencil } from "lucide-react";
+import {
+  PlusCircle,
+  IndianRupee,
+  Tag,
+  CreditCard,
+  Pencil,
+  RepeatIcon,
+} from "lucide-react";
 import { categories, paymentModes } from "@/utils/data";
 
 const ExpenseForm = () => {
@@ -26,14 +33,15 @@ const ExpenseForm = () => {
     date: new Date().toISOString().split("T")[0],
     paymentMode: "",
     note: "",
+    isRecurring: false,
   });
   const [showCategoryModal, setShowCategoryModal] = useState(false);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
@@ -78,6 +86,7 @@ const ExpenseForm = () => {
         color: selectedPaymentMode?.color || "",
       },
       note: formData.note || "No note added",
+      recurring: formData.isRecurring,
     };
 
     console.log("Expense Details:", expenseData);
@@ -107,6 +116,7 @@ const ExpenseForm = () => {
         date: new Date().toISOString().split("T")[0],
         paymentMode: "",
         note: "",
+        isRecurring: false,
       });
 
       // Close the dialog
@@ -267,6 +277,26 @@ const ExpenseForm = () => {
                 placeholder="Write a note"
                 className="border-none bg-transparent focus:ring-0 focus:outline-none text-gray-700"
               />
+            </div>
+
+            <div className="flex items-center gap-3">
+              <div className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  id="isRecurring"
+                  name="isRecurring"
+                  checked={formData.isRecurring}
+                  onChange={handleChange}
+                  className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                />
+                <label
+                  htmlFor="isRecurring"
+                  className="text-sm font-medium text-gray-700"
+                >
+                  This is a recurring expense
+                </label>
+                <RepeatIcon className="w-6 h-6 text-indigo-500" />
+              </div>
             </div>
           </div>
 
