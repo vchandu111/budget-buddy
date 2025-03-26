@@ -1,34 +1,9 @@
-import React from 'react';
+  import React from 'react';
 import { Star } from 'lucide-react';
 import Heading from '../Common/Heading';
-
+import testimonials from '../../../testimonials.json';
 const Testimonials = () => {
-  const testimonials = [
-    {
-      id: 1,
-      name: "Richard James",
-      role: "Small Business Owner",
-      quote: "BudgetBuddy has transformed how I manage my business finances. The intuitive interface and powerful tracking tools have saved me countless hours.",
-      rating: 5,
-      image: "https://mighty.tools/mockmind-api/content/human/65.jpg"
-    },
-    {
-      id: 2,
-      name: "Sarah White",
-      role: "Freelance Consultant",
-      quote: "As a professional, I need reliable financial tools. BudgetBuddy delivers with its comprehensive reporting and budget management features.",
-      rating: 5,
-      image: "https://mighty.tools/mockmind-api/content/human/44.jpg"
-    },
-    {
-      id: 3,
-      name: "Emma Brown",
-      role: "Entrepreneur",
-      quote: "The receipt scanner feature has been a game-changer for tracking my expenses. I highly recommend BudgetBuddy to anyone looking to improve their financial management.",
-      rating: 4,
-      image: "https://mighty.tools/mockmind-api/content/human/57.jpg"
-    }
-  ];
+
 
   return (
     <div className="py-20 bg-white">
@@ -72,23 +47,22 @@ const Testimonials = () => {
         
         <div className="mt-16 text-center">
           <div className="inline-flex flex-wrap justify-center gap-4">
-            {[4, 5, 6, 7, 8].map((id) => (
+            {[1, 2, 3,4,5].map((id) => (
               <img 
                 key={id}
-                src={`https://mighty.tools/mockmind-api/content/human/${id === 4 ? 5 : id === 5 ? 7 : id === 6 ? 68 : id === 7 ? 60 : 49}.jpg`}
-                alt={`User ${id}`}
+                src={`https://mighty.tools/mockmind-api/content/human/${id}.jpg`}
                 className="w-12 h-12 rounded-full object-cover border-2 border-white shadow-md"
               />
             ))}
             <div className="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-semibold text-sm border-2 border-white shadow-md">
-              +1K
+              +500
             </div>
           </div>
-          <p className="mt-4 text-gray-600">Join thousands of satisfied users today</p>
+          <p className="mt-4 text-gray-600">Join our growing community of users today</p>
         </div>
       </div>
     </div>
   );
 };
 
-export default Testimonials;
+  export default Testimonials;

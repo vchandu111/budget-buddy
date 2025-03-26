@@ -9,6 +9,7 @@ import {
   Search,
   X,
   AlertTriangle,
+  RepeatIcon,
 } from "lucide-react";
 import * as Icons from "lucide-react";
 import {
@@ -266,9 +267,19 @@ const ExpenseDisplay = ({ expenses, onDelete, onEdit, onSearchChange }) => {
                           )}
                         </span>
                         <div>
-                          <h3 className="font-medium text-teal-600">
-                            {expense.category.name}
-                          </h3>
+                          <div className="flex items-center gap-2">
+                            <h3 className="font-medium text-teal-600">
+                              {expense.category.name}
+                            </h3>
+                            {expense.recurring && (
+                              <div className="flex items-center gap-1 text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/50 px-2 py-1 rounded-full">
+                                <RepeatIcon className="w-3 h-3" />
+                                <span className="text-xs font-medium">
+                                  Recurring
+                                </span>
+                              </div>
+                            )}
+                          </div>
                           <p className="text-sm">{expense.paymentMode.name}</p>
                         </div>
                       </div>

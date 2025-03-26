@@ -6,7 +6,7 @@ import OverviewChart from "./OverviewChart";
 import RecurringIncomes from "./RecurringIncomes";
 import TopIncome from "../Income/TopIncome";
 import QuickActions from "./QuickActions";
-
+import RecurringExpenses from "./RecurringExpenses";
 const Overview = () => {
   const { user } = useUser();
   const [greeting, setGreeting] = useState("");
@@ -55,6 +55,7 @@ const Overview = () => {
         </div>
         <div className="w-1/2">
           <RecurringIncomes />
+          <RecurringExpenses />
         </div>
       </div>
     </div>

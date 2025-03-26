@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
+import banner from "../../assets/banner.jpg";   
 const Banner = () => {
   return (
     <div className="py-20 h-screen bg-white">
@@ -25,9 +25,9 @@ const Banner = () => {
             </Link>
           </div>
 
-          <div className="lg:w-1/2 relative">
+          <div className="lg:w-3/5 relative">
             <img
-              src="https://d1muf25xaso8hp.cloudfront.net/https%3A%2F%2F7146ebd610c4e00f7c3a0ec607a7c01a.cdn.bubble.io%2Ff1703660948031x763280807179639900%2Fimage%2520%252812%2529.png?w=1024&h=&auto=compress&dpr=1.75&fit=max"
+              src={banner}
               alt="Budget Dashboard Preview"
               className="rounded-lg w-full"
             />

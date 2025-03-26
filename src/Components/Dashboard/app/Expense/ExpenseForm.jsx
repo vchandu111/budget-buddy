@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -22,11 +22,14 @@ import {
   CreditCard,
   Pencil,
   RepeatIcon,
+  Loader2,
 } from "lucide-react";
-import { categories, paymentModes } from "@/utils/data";
+import { paymentModes } from "@/utils/data";
 
 const ExpenseForm = () => {
   const [open, setOpen] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [isLoadingCategories, setIsLoadingCategories] = useState(true);
   const [formData, setFormData] = useState({
     amount: "",
     category: "",
@@ -35,7 +38,31 @@ const ExpenseForm = () => {
     note: "",
     isRecurring: false,
   });
-  const [showCategoryModal, setShowCategoryModal] = useState(false);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch(
+          "https://budgetbuddy-bc5a0-default-rtdb.firebaseio.com/categories.json"
+        );
+        const data = await response.json();
+
+        // Convert the Firebase object to an array
+        const categoriesArray = Object.entries(data).map(([id, category]) => ({
+          id,
+          ...category,
+        }));
+
+        setCategories(categoriesArray);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      } finally {
+        setIsLoadingCategories(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -50,14 +77,6 @@ const ExpenseForm = () => {
       ...prev,
       [name]: value,
     }));
-  };
-
-  const handleCategorySelect = (category) => {
-    setFormData((prev) => ({
-      ...prev,
-      category: category,
-    }));
-    setShowCategoryModal(false);
   };
 
   const handleSubmit = async (e) => {
@@ -89,22 +108,16 @@ const ExpenseForm = () => {
       recurring: formData.isRecurring,
     };
 
-    console.log("Expense Details:", expenseData);
-
     try {
-      const myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/json");
-
-      const requestOptions = {
-        method: "POST",
-        headers: myHeaders,
-        body: JSON.stringify(expenseData),
-        redirect: "follow",
-      };
-
       const response = await fetch(
         "https://budgetbuddy-bc5a0-default-rtdb.firebaseio.com/expense.json",
-        requestOptions
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(expenseData),
+        }
       );
       const result = await response.json();
       console.log("Success:", result);
@@ -182,52 +195,49 @@ const ExpenseForm = () => {
                 <label className="text-sm font-medium text-gray-600 block mb-1">
                   Category
                 </label>
-                <button
-                  type="button"
-                  onClick={() => setShowCategoryModal(true)}
-                  className="text-left w-full text-gray-700 hover:text-indigo-600 transition-colors font-medium"
+                <Select
+                  value={formData.category}
+                  onValueChange={(value) =>
+                    handleSelectChange("category", value)
+                  }
                 >
-                  {formData.category || "Select category"}
-                </button>
-
-                {showCategoryModal && (
-                  <div className="fixed inset-0 bg-gray-300 bg-opacity-50 z-50 flex items-center justify-center">
-                    <div className="bg-white rounded-xl p-6 w-[90%] max-w-md max-h-[50vh] overflow-y-auto shadow-lg">
-                      <div className="flex justify-between items-center mb-4">
-                        <h3 className="text-lg font-semibold">
-                          Select Category
-                        </h3>
-                        <button
-                          type="button"
-                          onClick={() => setShowCategoryModal(false)}
-                          className="text-gray-500 hover:text-gray-700"
-                        >
-                          ✕
-                        </button>
+                  <SelectTrigger className="border-none bg-transparent focus:ring-0 p-0 h-8 text-gray-700 font-medium">
+                    <SelectValue placeholder="Select category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {isLoadingCategories ? (
+                      <div className="flex justify-center items-center py-2">
+                        <Loader2 className="w-5 h-5 animate-spin text-indigo-500" />
                       </div>
-                      <div className="grid grid-cols-4 gap-4">
-                        {categories.map((category) => (
-                          <button
-                            key={category.id}
-                            type="button"
-                            onClick={() => handleCategorySelect(category.name)}
-                            className="flex flex-col items-center justify-center p-3 bg-white-100 rounded-lg hover:bg-indigo-100 transition-colors"
-                          >
-                            <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mb-2 shadow-sm">
-                              <category.icon
-                                className="w-5 h-5"
-                                style={{ color: category.color }}
-                              />
-                            </div>
-                            <span className="text-xs text-center">
-                              {category.name}
-                            </span>
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                )}
+                    ) : (
+                      categories.map((category) => (
+                        <SelectItem key={category.id} value={category.name}>
+                          <div className="flex items-center gap-2">
+                            {category.name === "Food expenses" && (
+                              <IndianRupee className="w-5 h-5 text-indigo-500" />
+                            )}
+                            {category.name === "Shopping" && (
+                              <Tag className="w-5 h-5 text-indigo-500" />
+                            )}
+                            {category.name === "Entertainment" && (
+                              <CreditCard className="w-5 h-5 text-indigo-500" />
+                            )}
+                            {category.name === "Medical" && (
+                              <PlusCircle className="w-5 h-5 text-indigo-500" />
+                            )}
+                            {category.name === "Bills and Utilities" && (
+                              <CreditCard className="w-5 h-5 text-indigo-500" />
+                            )}
+                            {category.name === "Education" && (
+                              <Pencil className="w-5 h-5 text-indigo-500" />
+                            )}
+                            <span>{category.name}</span>
+                          </div>
+                        </SelectItem>
+                      ))
+                    )}
+                  </SelectContent>
+                </Select>
               </div>
             </div>
 

@@ -67,13 +67,8 @@ const Navbar = () => {
       icon: <LayoutDashboard className="w-5 h-5" />,
     },
     {
-      label: "Transactions",
-      href: "/transactions",
-      icon: <BookMarked className="w-5 h-5" />,
-    },
-    {
-      label: "Settings",
-      href: "/settings",
+      label: "Profile",
+      href: "/app/profile",
       icon: <Settings className="w-5 h-5" />,
     },
   ];

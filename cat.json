@@ -1,0 +1,39 @@
+[
+    {
+      "id": 1,
+      "name": "Food expenses",
+      "icon": "Utensils",
+      "budget": 5000
+    },
+    {
+      "id": 2,
+      "name": "Shopping",
+      "icon": "ShoppingCart",
+      "budget": 8000
+    },
+    {
+      "id": 3,
+      "name": "Entertainment",
+      "icon": "Gamepad",
+      "budget": 3000
+    },
+    {
+      "id": 4,
+      "name": "Medical",
+      "icon": "Stethoscope",
+      "budget": 2000
+    },
+    {
+      "id": 5,
+      "name": "Bills and Utilities",
+      "icon": "FileText",
+      "budget": 4000
+    },
+    {
+      "id": 6,
+      "name": "Education",
+      "icon": "GraduationCap",
+      "budget": 7000
+    }
+  ]
+  
